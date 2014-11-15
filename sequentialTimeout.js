@@ -15,7 +15,6 @@
     return arr.length === 0;
   }
 
-
   angular.module('mbildner.timeout', []);
 
   angular.module('mbildner.timeout').factory('callablesTimeout', function ($q, $timeout) {
@@ -62,7 +61,8 @@
         }, timeout || 0)
         .then(function () {
           runCallablesTimeout(callablesArr, timeout, allResults, allFinished);
-        });
+        })
+        .catch(allFinished.reject);
       }
     }
 
@@ -128,7 +128,9 @@
         }, timeout || 0)
           .then(function() {
             runSequentialTimeout(sequence, callback, timeout, allResults, allFinished);
-          });
+          })
+          .catch(allFinished.reject);
+
       }
     }
 
