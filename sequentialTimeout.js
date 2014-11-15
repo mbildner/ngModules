@@ -1,6 +1,5 @@
 ;(function (window, document, angular) {
 
-
   function isFunction (obj) {
     return typeof obj === 'function';
   }
@@ -65,6 +64,8 @@
         });
       }
     }
+
+    getCallablesTimeout.isTestable = 'moshe bildner';
 
     return getCallablesTimeout;
   });
@@ -131,6 +132,8 @@
           });
       }
     }
+
+    getSequentialTimeout.isTestable = 'moshe bildner also';
 
     return getSequentialTimeout;
   });

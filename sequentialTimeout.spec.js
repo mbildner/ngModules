@@ -1,13 +1,20 @@
-describe('sequentialTimeout', function(){
-  describe('')
+describe('sequenceTimeout', function() {
+  var _callablesTimeout, _sequenceTimeout;
 
-    describe('when I call myService.one', function(){
-        it('returns 1', function(){
-            var $injector = angular.injector([ 'myModule' ]);
-            var myService = $injector.get( 'myService' );
-            expect( myService.one ).toEqual(1);
-        })
+  // bootstrap angular
+  beforeEach(module('mbildner.timeout'));
+  describe('some feature', function () {
 
-    }
+    beforeEach(inject(function (callablesTimeout, sequenceTimeout) {
 
+      _callablesTimeout = callablesTimeout;
+      _sequenceTimeout = sequenceTimeout;
+
+    }));
+
+    it('should let me know whatsup', function () {
+      expect(_callablesTimeout.isTestable).toBe('moshe bildner');
+      expect(_sequenceTimeout.isTestable).toBe('moshe bildner also');
+    });
+  });
 });
