@@ -65,8 +65,6 @@
       }
     }
 
-    getCallablesTimeout.isTestable = 'moshe bildner';
-
     return getCallablesTimeout;
   });
 
@@ -133,91 +131,8 @@
       }
     }
 
-    getSequentialTimeout.isTestable = 'moshe bildner also';
-
     return getSequentialTimeout;
   });
-
-  angular.module('mbildner.timeout').controller('DemoController', function($scope, $timeout, sequenceTimeout, callablesTimeout) {
-    $scope.counter = 0;
-    $scope.counter1 = 0;
-    $scope.counter2 = 0;
-
-    sequenceTimeout([1, 2, 3, 4, 5, 6, 7], function(count) {
-      $scope.counter = count;
-      return count;
-    }, 1000).then(function(all) {
-      console.log(all);
-    });
-
-    sequenceTimeout([1, 2, 3, 4, 5, 6, 7], function(count) {
-      $scope.counter1 = count;
-      return count;
-    }, 580).then(function(all) {
-      console.log(all);
-    });
-
-    sequenceTimeout([1, 2, 3, 4, 5, 6, 7], function(count) {
-      $scope.counter2 = count;
-      return count * 2;
-    }, 400).then(function(all) {
-      console.log(all);
-    });
-
-    sequenceTimeout(1, 2, 3, 4, 5, 6, 7, function(count) {
-      return 12;
-    }).then(function(a) {
-      console.log('it worked!');
-    }).
-    catch (function(e) {
-      console.log('it failed! ', e);
-    });
-
-    callablesTimeout(
-      (function () { return 12; }),
-      (function () { return 12; }),
-      (function () { return 12; }),
-      (function () { return 12; })
-    ).then(function (numbers) {
-      console.log('callables no arr no timeout');
-      console.log(numbers);
-    });
-
-      callablesTimeout([
-          (function () { return 12; }),
-          (function () { return 12; }),
-          (function () { return 12; }),
-          (function () { return 12; })
-    ]).then(function (numbers) {
-      console.log('callables yes arr no timeout');
-        console.log(numbers);
-      });
-
-    callablesTimeout(
-      (function () { return 12; }),
-      (function () { return 12; }),
-      (function () { return 12; }),
-      (function () { return 12; }),
-      500
-    ).then(function (numbers) {
-      console.log('callables no arr yes timeout');
-      console.log(numbers);
-    });
-
-    callablesTimeout([
-        (function () { return 12; }),
-        (function () { return 12; }),
-        (function () { return 12; }),
-        (function () { return 12; })
-      ], 500
-    ).then(function (numbers) {
-      console.log('callables yes arr yes timeout');
-      console.log(numbers);
-    });
-
-  });
-
-
 
 })(window, document, angular);
 
