@@ -1,0 +1,27 @@
+{
+  "name": "ngSequentialTimeout",
+  "version": "1.0.0",
+  "description": "",
+  "main": "conf.js",
+  "dependencies": {
+    "protractor": "^1.4.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "karma": "^0.12.25",
+    "protractor": "^1.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbildner/ngModules.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbildner/ngModules/issues"
+  },
+  "homepage": "https://github.com/mbildner/ngModules"
+}
