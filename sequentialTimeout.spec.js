@@ -2,6 +2,7 @@ describe('sequenceTimeout', function () {
 
   var callablesTimeout;
   var sequenceTimeout;
+  var $rootScope;
   var $timeout;
 
   beforeEach(module('mbildner.timeout'));
@@ -9,10 +10,13 @@ describe('sequenceTimeout', function () {
   beforeEach(inject(function ($injector) {
     callablesTimeout = $injector.get('callablesTimeout');
     sequenceTimeout = $injector.get('sequenceTimeout');
+    $rootScope = $injector.get('$rootScope');
     $timeout = $injector.get('$timeout');
   }));
 
   describe('callablesTimeout factory', function () {
+    // tests fail with anything but 0ms timeouts - why?
+
     it('array, timeout', function () {
       var valueToVerify;
       callablesTimeout([
@@ -80,9 +84,10 @@ describe('sequenceTimeout', function () {
   });
 
   describe('sequenceTimeout factory', function () {
+    // tests fail with anything but 0ms timeouts - why?
+
     it('array, callback, timeout', function () {
       var valueToVerify;
-      // tests fail with anything but 0ms timeouts - why?
       sequenceTimeout([1, 2, 3, 4, 5, 6, 7], function (count) {
         return count * 2;
       }, 0).then(function(all) {
@@ -95,7 +100,6 @@ describe('sequenceTimeout', function () {
 
     it('array, callback', function () {
       var valueToVerify;
-      // tests fail with anything but 0ms timeouts - why?
       sequenceTimeout([1, 2, 3, 4, 5, 6, 7], function (count) {
         return count * 2;
       }).then(function(all) {
@@ -108,7 +112,6 @@ describe('sequenceTimeout', function () {
 
     it('arguments, callback, timeout', function () {
       var valueToVerify;
-      // tests fail with anything but 0ms timeouts - why?
       sequenceTimeout(1, 2, 3, 4, 5, 6, 7, function (count) {
         return count * 2;
       }, 0).then(function(all) {
@@ -121,7 +124,6 @@ describe('sequenceTimeout', function () {
 
     it('arguments, callback', function () {
       var valueToVerify;
-      // tests fail with anything but 0ms timeouts - why?
       sequenceTimeout(1, 2, 3, 4, 5, 6, 7, function (count) {
         return count * 2;
       }).then(function(all) {
