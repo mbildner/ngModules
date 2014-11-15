@@ -1,4 +1,5 @@
 ;(function (window, document, angular) {
+  'use strict';
 
   function isFunction (obj) {
     return typeof obj === 'function';
