@@ -69,7 +69,61 @@
     return getCallablesTimeout;
   });
 
+  angular.module('mbildner.timeout').factory('deferrablesTimeout', function ($q, $timeout) {
+    function normalizeDeferableSequenceArgs (argsArr) {
+      var args = [];
 
+      var timeout;
+      var sequence;
+
+      var i;
+      for (i = 0; i < argsArr.length; i++) {
+        args.push(argsArr[i]);
+      }
+
+      timeout = isNumber(args[args.length - 1]) ? args.pop() : 0;
+      sequence = (args.length === 1 && isArray(args[0])) ? args[0] : args;
+
+      return [sequence, timeout];
+    }
+
+
+    function getDeferableSeqTimeout (/* args */) {
+      var allFinished = $q.defer();
+      var allResults = [];
+
+      var args = normalizeDeferableSequenceArgs(arguments);
+      args.push(allResults, allFinished);
+      runDeferableSeqTimeout.apply(null, args);
+      return allFinished.promise;
+    }
+
+    function runDeferableSeqTimeout (deferrablesArr, timeout, allResults, allFinished) {
+
+      if (isArray(deferrablesArr) && isEmpty(deferrablesArr)) {
+        allFinished.resolve(allResults);
+      }
+      else if (isArray(deferrablesArr) && !isEmpty(deferrablesArr)) {
+        var deferrables = deferrablesArr.shift()
+
+        $timeout(function () {
+          deferrables()
+            .then(function (/* results */) {
+              var args = [].slice.call(arguments);
+              allResults.push(args);
+            })
+            .then(function () {
+              runDeferableSeqTimeout(deferrablesArr, timeout, allResults, allFinished);
+            })
+            .catch(allFinished.reject);
+        }, timeout || 0);
+      }
+    }
+
+
+    return getDeferableSeqTimeout;
+
+  });
 
   angular.module('mbildner.timeout').factory('sequenceTimeout', function ($q, $timeout) {
     function normalizeSequentialTimeoutArgs (argsArr) {

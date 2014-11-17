@@ -5,11 +5,25 @@ describe('sequenceTimeout', function () {
   var $rootScope;
   var $timeout;
 
+  function getDeferrable (val) {
+    return function () {
+      var deferred = $q.defer();
+
+      $timeout(function () {
+        deferred.resolve(val);
+      });
+
+      return deferred.promise;
+    }
+  }
+
   beforeEach(module('mbildner.timeout'));
 
   beforeEach(inject(function ($injector) {
     callablesTimeout = $injector.get('callablesTimeout');
     sequenceTimeout = $injector.get('sequenceTimeout');
+    deferrablesTimeout = $injector.get('deferrablesTimeout');
+    $q = $injector.get('$q');
     $rootScope = $injector.get('$rootScope');
     $timeout = $injector.get('$timeout');
   }));
@@ -134,4 +148,75 @@ describe('sequenceTimeout', function () {
       expect(valueToVerify).toEqual([2, 4, 6, 8, 10, 12, 14]);
     });
   });
+
+
+  describe('deferrablesTimeout factory', function () {
+    // tests fail with anything but 0ms timeouts - why?
+
+    it('array, timeout', function () {
+      var valueToVerify;
+      deferrablesTimeout([
+        getDeferrable(1),
+        getDeferrable(2),
+        getDeferrable(3),
+        getDeferrable(4)
+      ], 0).then(function (allValues) {
+        valueToVerify = allValues;
+      });
+
+      $timeout.flush();
+      expect(valueToVerify).toEqual([[1], [2], [3], [4]]);
+    });
+
+    it('array', function () {
+      var valueToVerify;
+      deferrablesTimeout([
+        getDeferrable(1),
+        getDeferrable(2),
+        getDeferrable(3),
+        getDeferrable(4)
+      ]).then(function (allValues) {
+        valueToVerify = allValues;
+      });
+
+      $timeout.flush();
+      expect(valueToVerify).toEqual([[1], [2], [3], [4]]);
+
+    });
+
+    it('arguments, timeout', function () {
+      var valueToVerify;
+      deferrablesTimeout(
+        getDeferrable(1),
+        getDeferrable(2),
+        getDeferrable(3),
+        getDeferrable(4),
+        0
+      ).then(function (allValues) {
+        valueToVerify = allValues;
+      });
+
+      $timeout.flush();
+      expect(valueToVerify).toEqual([[1], [2], [3], [4]]);
+
+    });
+
+    it('arguments', function () {
+      var valueToVerify;
+      deferrablesTimeout(
+        getDeferrable(1),
+        getDeferrable(2),
+        getDeferrable(3),
+        getDeferrable(4)
+      ).then(function (numbers) {
+        valueToVerify = numbers;
+        return [1, 2, 3, 4];
+      });
+
+      $timeout.flush();
+      expect(valueToVerify).toEqual([[1], [2], [3], [4]]);
+
+    });
+  });
+
 });
